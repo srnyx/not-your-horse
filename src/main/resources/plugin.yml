@@ -1,0 +1,22 @@
+name: ${name}
+description: Prevent players from riding other players' horses, donkeys, and mules
+authors:
+  - srnyx
+website: https://srnyx.xyz
+
+main: xyz.srnyx.notyourhorse.NotYourHorse
+version: ${version}
+
+commands:
+  notyourhorse:
+    description: Main command for the plugin
+    aliases:
+      - nyh
+      - horse
+    permission: notyourhorse.command
+
+permissions:
+  notyourhorse.command:
+    description: Allows the player to use /notyourhorse
+  notyourhorse.bypass:
+    description: Allows the player to bypass the plugin

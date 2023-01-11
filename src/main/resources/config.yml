@@ -1,0 +1,6 @@
+# Settings for the punishment when a player rides an animal that isn't theirs
+punishment:
+  # Chance for player to be punished when mounting
+  chance: 50
+  # Damage to do to player, "kill" to completely kill them
+  damage: "kill"
