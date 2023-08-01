@@ -1,37 +1,33 @@
-package xyz.srnyx.notyourhorse;
+package xyz.srnyx.notyourhorse.listeners;
 
 import org.bukkit.GameMode;
-import org.bukkit.entity.AbstractHorse;
-import org.bukkit.entity.AnimalTamer;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.Player;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.vehicle.VehicleEnterEvent;
 
-import org.jetbrains.annotations.Contract;
 import org.jetbrains.annotations.NotNull;
 
 import xyz.srnyx.annoyingapi.AnnoyingListener;
-import xyz.srnyx.annoyingapi.AnnoyingMessage;
-import xyz.srnyx.annoyingapi.AnnoyingPlugin;
+import xyz.srnyx.annoyingapi.message.AnnoyingMessage;
+import xyz.srnyx.notyourhorse.NotYourHorse;
 
 import java.util.HashMap;
 import java.util.Random;
 
 
 public class HorseListener implements AnnoyingListener {
+    @NotNull private static final Random RANDOM = new Random();
+
     @NotNull private final NotYourHorse plugin;
-    @NotNull private final Random random = new Random();
     @NotNull private final HashMap<String, String> players = new HashMap<>();
 
-    @Contract(pure = true)
     public HorseListener(@NotNull NotYourHorse plugin) {
         this.plugin = plugin;
     }
 
-    @Override
-    public @NotNull AnnoyingPlugin getPlugin() {
+    @Override @NotNull
+    public NotYourHorse getAnnoyingPlugin() {
         return plugin;
     }
 
@@ -40,23 +36,26 @@ public class HorseListener implements AnnoyingListener {
      */
     @EventHandler
     public void onVehicleEnter(@NotNull VehicleEnterEvent event) {
-        final Entity vehicle = event.getVehicle();
-        if (!plugin.enabled || !(vehicle instanceof AbstractHorse)) return;
+        // Plugin and vehicle check
+        final Vehicle vehicle = event.getVehicle();
+        if (!plugin.enabled || !(vehicle instanceof Tameable)) return;
+        // Owner, rider, permission, and chance check
         final Entity rider = event.getEntered();
-        final AnimalTamer owner = ((AbstractHorse) vehicle).getOwner();
-        if (owner == null || owner.equals(event.getEntered()) // owner checks
-                || !(rider instanceof Player) || rider.hasPermission("notyourhorse.bypass") // player & permission check
-                || plugin.chance < random.nextInt(100)) return; // chance check
+        final AnimalTamer owner = ((Tameable) vehicle).getOwner();
+        if (owner == null || owner.equals(rider) || !(rider instanceof Player) || rider.hasPermission("notyourhorse.bypass") || plugin.chance < RANDOM.nextInt(100)) return;
+        // GameMode check
         final Player riderPlayer = (Player) rider;
-        if (riderPlayer.getGameMode() == GameMode.CREATIVE) return; // gamemode check
+        final GameMode gameMode = riderPlayer.getGameMode();
+        if (gameMode == GameMode.CREATIVE || gameMode == GameMode.SPECTATOR) return;
 
+        // Damage/kill rider
         event.setCancelled(true);
-        if (plugin.damage == null || riderPlayer.getHealth() - plugin.damage <= 0) {
-            players.put(riderPlayer.getName(), owner.getName());
-            riderPlayer.setHealth(0);
+        if (plugin.damage != null && riderPlayer.getHealth() - plugin.damage > 0) {
+            riderPlayer.damage(plugin.damage);
             return;
         }
-        riderPlayer.damage(plugin.damage);
+        players.put(riderPlayer.getName(), owner.getName());
+        riderPlayer.setHealth(0);
     }
 
     /**

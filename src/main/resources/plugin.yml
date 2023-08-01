@@ -1,11 +1,12 @@
 name: ${name}
-description: Prevent players from riding other players' horses, donkeys, and mules
+description: ${description}
 authors:
   - srnyx
-website: https://srnyx.xyz
+website: https://srnyx.com
 
-main: xyz.srnyx.notyourhorse.NotYourHorse
+main: ${group}.notyourhorse.NotYourHorse
 version: ${version}
+api-version: 1.13
 
 commands:
   notyourhorse:
