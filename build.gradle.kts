@@ -10,7 +10,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
-setupAnnoyingAPI("4.1.0", "xyz.srnyx", "1.0.0", "Prevent players from riding other players' horses, donkeys, and mules")
+setupAnnoyingAPI("4.1.0", "xyz.srnyx", "2.0.0", "Prevent players from riding other players' horses, donkeys, and mules")
 spigotAPI("1.8.8")
 repository(Repository.PLACEHOLDER_API)
 dependencies.compileOnly("me.clip", "placeholderapi", "2.11.3")
