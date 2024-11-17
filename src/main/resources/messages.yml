@@ -37,7 +37,9 @@ error:
   # Command is used when it's disabled
   disabled-command: "%prefix%%se%%command%%pe% is disabled!@@%pe%%command%@@%command%"
 
-death: "%player% tried to ride %owner%'s horse" # %player%, %owner%
+ride: "&cThat mount belongs to &4%owner%&c, you can't ride it!" # %owner%
+
+death: "%player% died trying to ride %owner%'s mount" # %player%, %owner%
 
 command:
   reload: "%prefix%Reloaded plugin@@%p%%command%@@%command%"

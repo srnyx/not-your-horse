@@ -10,7 +10,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.5"
 }
 
-setupAnnoyingAPI("4.1.0", "xyz.srnyx", "2.0.0", "Prevent players from riding other players' horses, donkeys, and mules")
+setupAnnoyingAPI("5.1.3", "xyz.srnyx", "2.0.1", "Prevent players from riding other players' horses, donkeys, and mules")
 spigotAPI("1.8.8")
 
 repository(Repository.PLACEHOLDER_API)

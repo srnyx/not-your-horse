@@ -1,8 +1,10 @@
 # Settings for the punishment when a player rides an animal that isn't theirs
+# If you just want the plugin to disable non-owners from riding, set chance to 100 and damage to 0
 punishment:
   # Chance for player to be punished when mounting
   chance: 50
-  # Damage to do to player, "kill" to completely kill them
-  # Example:
-  #   damage: 6 # 3 hearts
-  damage: "kill"
+
+  # Damage to do to the rider
+  # Put "kill" to completely kill the player
+  # 1 = half a heart, 2 = 1 heart, etc...
+  damage: kill

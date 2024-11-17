@@ -28,15 +28,15 @@ public class NYHPlaceholders extends AnnoyingPAPIExpansion {
 
     @Override @Nullable
     public String onPlaceholderRequest(@Nullable Player player, @NotNull String params) {
-        // enabled
-        if (params.equals("enabled")) return String.valueOf(plugin.enabled);
+        switch (params) {
+            // enabled
+            case "enabled": return String.valueOf(!plugin.data.has(NotYourHorse.COL_DISABLED));
+            // chance
+            case "chance": return String.valueOf(plugin.config.punishment.chance);
+            // damage
+            case "damage": return plugin.config.punishment.damage == null ? "kill" : plugin.config.punishment.damage.toString();
 
-        // chance
-        if (params.equals("chance")) return String.valueOf(plugin.chance);
-
-        // damage
-        if (params.equals("damage")) return plugin.damage == null ? "kill" : plugin.damage.toString();
-
-        return null;
+            default: return null;
+        }
     }
 }

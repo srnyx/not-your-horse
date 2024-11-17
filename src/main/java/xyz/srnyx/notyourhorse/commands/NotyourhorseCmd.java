@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class NotyourhorseCmd implements AnnoyingCommand {
+public class NotyourhorseCmd extends AnnoyingCommand {
     @NotNull private final NotYourHorse plugin;
 
     public NotyourhorseCmd(@NotNull NotYourHorse plugin) {
@@ -31,33 +31,25 @@ public class NotyourhorseCmd implements AnnoyingCommand {
 
     @Override
     public void onCommand(@NotNull AnnoyingSender sender) {
-        final String[] args = sender.args;
-
-        if (args.length == 0) {
-            plugin.toggle(!plugin.enabled, sender);
-            return;
-        }
-
-        if (args.length == 1) {
-            // <on|off>
-            if (sender.argEquals(0, "on", "off")) {
-                plugin.toggle(sender.argEquals(0, "on"), sender);
-                return;
-            }
-
+        if (sender.args.length == 1) {
             // reload
             if (sender.argEquals(0, "reload")) {
                 plugin.reloadPlugin();
                 new AnnoyingMessage(plugin, "command.reload").send(sender);
                 return;
             }
+
+            // <on|off>
+            plugin.toggle(sender.argEquals(0, "on"), sender);
+            return;
         }
 
-        sender.invalidArguments();
+        // No args: toggle
+        plugin.toggle(!plugin.data.has(NotYourHorse.COL_DISABLED), sender);
     }
 
     @Override @NotNull
     public List<String> onTabComplete(@NotNull AnnoyingSender sender) {
-        return Arrays.asList("reload", plugin.enabled ? "off" : "on");
+        return Arrays.asList("reload", plugin.data.has(NotYourHorse.COL_DISABLED) ? "on" : "off");
     }
 }
